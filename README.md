@@ -45,6 +45,20 @@ generate_vrt -i sample.json -o sample.vrt
 This will generate a VRT file sample.vrt based on the JSON data in sample.json.
 
 
+### Pipeline script
+
+Usually you will use it inside a pipeline, for example:
+[Pipeline](pipeline_videos.py)
+
+Create a Huggingface token and accept the conditions for using silero vad before running the pipeline and change the hf_token in the code.
+In my pc takes about 6:30 minutes to process a 1 hour of video.
+
+```bash
+./pipeline_videos.py -i videos_to_process -l en
+```
+
+
+
 ## Contributing
 
 To contribute, please fork the repository and submit a pull request.
