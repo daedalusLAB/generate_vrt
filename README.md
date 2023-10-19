@@ -22,6 +22,19 @@ To install directly from GitHub:
 pip install git+https://github.com/daedalusLAB/generate_vrt.git
 ```
 
+
+### Spacy Models
+
+After installing the package, you will need to download the Spacy models for the languages you want to use. For example, to download the models for English, German and Spanish, you can run the following commands:
+
+```
+python -m spacy download en_core_web_trf
+python -m spacy download de_core_news_trf
+python -m spacy download es_dep_news_trf
+
+```
+
+
 ## Usage
 To run the generate_vrt tool, you can use the following command:
 
