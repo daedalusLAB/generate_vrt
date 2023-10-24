@@ -29,7 +29,7 @@ After installing the package, you will need to download the Spacy models for the
 
 ```
 python -m spacy download en_core_web_trf
-python -m spacy download de_core_news_trf
+python -m spacy download de_dep_news_trf
 python -m spacy download es_dep_news_trf
 
 ```
