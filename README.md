@@ -22,6 +22,11 @@ To install directly from GitHub:
 pip install git+https://github.com/daedalusLAB/generate_vrt.git
 ```
 
+To upgrade to the latest version:
+
+```bash
+pip install --upgrade git+https://github.com/daedalusLAB/generate_vrt.git
+```
 
 ### Spacy Models
 
