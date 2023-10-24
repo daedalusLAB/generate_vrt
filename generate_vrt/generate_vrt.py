@@ -231,7 +231,7 @@ class VRTGenerator:
             # write the sentence to the file
             self.write_vrt_sentence(sentence, sentence_id, vrt_file)
         # close the file
-        vrt_file.write('</text>')
+        vrt_file.write('</text>\n')
         vrt_file.close()
 
 
