@@ -13,9 +13,10 @@ import spacy
 
 class VRTGenerator:
     ''' Initializes the VRTGenerator class'''
-    def __init__(self, input_json_file, output_vrt_file):
+    def __init__(self, input_json_file, output_vrt_file, uuid=None):
         self.input_json_file = input_json_file
         self.output_vrt_file = output_vrt_file
+        self.uuid = uuid
         self.aligned_transcription = self.extract_timestamps()
         self.language = self.get_language()
         self.nlp = self.load_spacy_model()
@@ -195,8 +196,11 @@ class VRTGenerator:
 
     ''' Write vrt header to the output file getting the output file handler'''
     def write_vrt_header(self, vrt_file):
-        # write the vrt header to the file
-        vrt_file.write('<text id="' + self.metadata['filename']  +  '" '  + 'file="' + self.metadata['filename_with_ext'] + '" '  + ' language="' + self.language + '" ' + \
+        # if uuid is None, uuid will be filename
+        if self.uuid is None:
+            self.uuid = self.metadata['filename']
+        # write the vrt header to the file        
+        vrt_file.write('<text id="' + self.uuid  +  '" '  + 'file="' + self.metadata['filename_with_ext'] + '" '  + ' language="' + self.language + '" ' + \
             'collection="Daedalus Red Hen" ' + 'date="' + self.metadata['date_time'] + '" ' + 'channel="' + self.metadata['channel'] + '" ' + 'country="' + self.metadata['country'] + '" ' + \
             'title="' + self.metadata['title'] + '" ' + 'year="' + self.metadata['year'] + '" ' + 'month="' + self.metadata['month'] + '" ' + 'day="' + self.metadata['day'] + '" ' + 'time="' + self.metadata['time'] + '" ' + '>\n')
         
@@ -235,21 +239,45 @@ class VRTGenerator:
         vrt_file.close()
 
 
+def get_uuid(uuid_list, json_file):
+    # Read the UUIDs and filenames and return the UUID. Original uuid file looks like this:
+    # 2021-08-07_2300_US_KNBC_NBC_4_News_at_4pm.txt,32a48b4e-f7d3-11eb-bfc9-089e01ba0326
+    # 2021-08-07_2330_BR_Globo_Jornal_nacional.txt,0f896a7e-f7df-11eb-a642-37204764a089
+    # 2021-08-08_0000_US_FOX-News_Watters_World.txt,93aeaba6-f7db-11eb-b0a5-2c600c9500f4
+    # 2021-08-08_0000_US_KNBC_NBC_4_News_at_5pm.txt,93f5dcb0-f7db-11eb-8357-089e01ba0326
+    with open(uuid_list, 'r') as f:
+        uuids = f.read().splitlines()
+    # generate original filename from json file
+    json_file = json_file.split('/')[-1]
+    json_file = json_file.split('.')[0]
+    json_file = json_file  + '.txt'
+    # loop through the UUIDs and return the UUID for the file
+    for uuid in uuids:
+        if json_file in uuid:
+            uuid = uuid.split(',')[1]
+            return uuid
+    return None
+
 def main():
     # Parse the arguments
     parser = argparse.ArgumentParser(description='Generate .vrt file from Whisper .json file')
     parser.add_argument('--input_json_file', '-i', help='Input .json file from whisper', required=True)
     parser.add_argument('--output_vrt_file', '-o', help='Output .vrt file', required=True)
+    parser.add_argument('--uuid_list', '-u', help='List of UUIDs to process', required=False)
     args = parser.parse_args()
 
+    # If the UUID list is provided, get the UUID for the input JSON file
+    if args.uuid_list:
+        uuid = get_uuid(args.uuid_list, args.input_json_file)
+    else:
+        uuid = None
     # Initialize the VRTGenerator class
-    vrt_generator = VRTGenerator(args.input_json_file, args.output_vrt_file)
+    vrt_generator = VRTGenerator(args.input_json_file, args.output_vrt_file, uuid)
     # Map the tokens to the words in the aligned transcription and return the sentences
     sentences = vrt_generator.map_tokens_to_words_time(vrt_generator.aligned_transcription)
     # Write the vrt file
     vrt_generator.write_vrt_file(sentences)
 
-
-
+ 
 if __name__ == "__main__":
     main()

@@ -49,6 +49,21 @@ generate_vrt -i sample.json -o sample.vrt
 
 This will generate a VRT file sample.vrt based on the JSON data in sample.json.
 
+If you want to get the uuid of the video from an external file, you can use the following command:
+
+```bash
+generate_vrt -i sample.json -o sample.vrt -u filename_uuid_list.txt
+```
+
+filename_uuid_list.txt should be a file with the following format:
+
+```
+2021-08-07_2300_US_KNBC_NBC_4_News_at_4pm.txt,32a48b4e-f7d3-11eb-bfc9-089e01ba0326
+2021-08-07_2330_BR_Globo_Jornal_nacional.txt,0f896a7e-f7df-11eb-a642-37204764a089
+2021-08-08_0000_US_FOX-News_Watters_World.txt,93aeaba6-f7db-11eb-b0a5-2c600c9500f4
+2021-08-08_0000_US_KNBC_NBC_4_News_at_5pm.txt,93f5dcb0-f7db-11eb-8357-089e01ba0326
+```
+
 
 ### Pipeline script
 

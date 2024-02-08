@@ -129,3 +129,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+filename_uuid_list.txt
+*.ipynb
+*.vrt
