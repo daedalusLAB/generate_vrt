@@ -67,18 +67,18 @@ class VRTGenerator:
         # Read the JSON file
         with open(self.input_json_file, 'r') as f:
             json_data = json.load(f)
-        # Return the language
-        return json_data['language']
+        # Return the language in Uppercase
+        return json_data['language'].upper()
 
 
     ''' Load spacy model for the language of the transcription'''
     def load_spacy_model(self):
         # switch case for different languages
-        if self.language == 'en':
+        if self.language == 'EN':
             nlp = spacy.load('en_core_web_trf')
-        elif self.language == 'de':
+        elif self.language == 'DE':
             nlp = spacy.load('de_core_news_trf')
-        elif self.language == 'es':
+        elif self.language == 'ES':
             nlp = spacy.load('es_dep_news_trf')
         else:
             print('Language not supported')
@@ -164,6 +164,8 @@ class VRTGenerator:
         # sub - for _ in filename
         filename = filename.replace('-', '_')  
         filename_with_ext = self.input_json_file.split('/')[-1]
+        # change filename_with_ext extension to .txt 
+        filename_with_ext = filename_with_ext.split('.')[0] + '.txt'
         # filename with extension: 2016-01-01_0000_US_MSNBC_Hardball_with_Chris_Matthews.json
         # date and time: 2016-01-01_0000
         date_time = filename_with_ext.split('_')[0] + '_' + filename_with_ext.split('_')[1]
@@ -255,6 +257,8 @@ def get_uuid(uuid_list, json_file):
     for uuid in uuids:
         if json_file in uuid:
             uuid = uuid.split(',')[1]
+            # transform uuid like this: 32a48b4e-f7d3-11eb-bfc9-089e01ba0326 to this: t__32a48b4e_f7d3_11eb_bfc9_089e01ba0326
+            uuid = 't__' + uuid.replace('-', '_')
             return uuid
     return None
 
@@ -278,6 +282,5 @@ def main():
     # Write the vrt file
     vrt_generator.write_vrt_file(sentences)
 
- 
 if __name__ == "__main__":
     main()
