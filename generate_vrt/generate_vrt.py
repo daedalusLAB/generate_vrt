@@ -107,11 +107,10 @@ class VRTGenerator:
         external_char_idx = 0  # Initialize external character index
 
         for sent in doc.sents:
-            # if sent.text.isupper():
-            #     sentence_doc = self.nlp(sent.text.capitalize())
-            # else:
-            #     sentence_doc = self.nlp(sent.text)
-            sentence_doc = self.nlp(sent.text)
+            if sent.text.isupper():
+                sentence_doc = self.nlp(sent.text.capitalize())
+            else:
+                sentence_doc = self.nlp(sent.text)
     
             for token in sentence_doc:
                 internal_char_idx = token.idx  # Internal character index for the sentence
