@@ -171,6 +171,7 @@ class VRTGenerator:
         date_time = filename_with_ext.split('_')[0] + '_' + filename_with_ext.split('_')[1]
         # channel: MSNBC
         channel = filename_with_ext.split('_')[3]
+        channel = channel.replace('-', '_')
         # title: Hardball_with_Chris_Matthews from 2016-01-01_0000_US_MSNBC_Hardball_with_Chris_Matthews.json
         title = '_'.join(filename_with_ext.split('_')[4:]).split('.')[0]  
         # year: 2016
