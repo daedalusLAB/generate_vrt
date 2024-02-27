@@ -169,11 +169,9 @@ class VRTGenerator:
         # filename with extension: 2016-01-01_0000_US_MSNBC_Hardball_with_Chris_Matthews.json
         # date and time: 2016-01-01_0000
         date_time = filename_with_ext.split('_')[0] + '_' + filename_with_ext.split('_')[1]
-        # channel: MSNBC
-        channel = filename_with_ext.split('_')[3]
-        channel = channel.replace('-', '_')
+        channel = filename_with_ext.split('_')[3].replace('-', '_')
         # title: Hardball_with_Chris_Matthews from 2016-01-01_0000_US_MSNBC_Hardball_with_Chris_Matthews.json
-        title = '_'.join(filename_with_ext.split('_')[4:]).split('.')[0]  
+        title = '_'.join(filename_with_ext.split('_')[4:]).split('.')[0].replace('-', '_')
         # year: 2016
         year = date_time.split('-')[0]
         # month: 01
@@ -201,7 +199,8 @@ class VRTGenerator:
     def write_vrt_header(self, vrt_file):
         # if uuid is None, uuid will be filename
         if self.uuid is None:
-            self.uuid = self.metadata['filename']
+            self.uuid = 't__' + self.metadata['filename'].replace('-', '_')
+
         # write the vrt header to the file        
         vrt_file.write('<text id="' + self.uuid  +  '" '  + 'file="' + self.metadata['filename_with_ext'] + '" '  + ' language="' + self.language + '" ' + \
             'collection="Daedalus Red Hen" ' + 'date="' + self.metadata['date_time'] + '" ' + 'channel="' + self.metadata['channel'] + '" ' + 'country="' + self.metadata['country'] + '" ' + \
