@@ -133,3 +133,4 @@ dmypy.json
 filename_uuid_list.txt
 *.ipynb
 *.vrt
+tmp/*
