@@ -2,12 +2,13 @@ from setuptools import setup, find_packages
 
 setup(
     name="generate_vrt",
-    version="0.41",
+    version="0.42",
     packages=find_packages(),
     install_requires=[
         "pandas",
         "argparse",
-        "spacy"
+        "spacy",
+        "numpy<2"
     ],
     entry_points={
         'console_scripts': [
